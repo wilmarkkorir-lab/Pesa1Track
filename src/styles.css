@@ -1,0 +1,33 @@
+@import "tailwindcss";
+*{box-sizing:border-box}
+html,body{margin:0;height:auto;overflow-y:auto;scrollbar-width:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none}
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none}
+body{background:#f8fafc;color:#0f172a;font-family:Inter,system-ui,sans-serif}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 1px 3px #0f172a12}
+.input{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:.7rem;background:white;font-size:.95rem}
+.input:focus{outline:3px solid #10b98122;border-color:#10b981}
+.label{display:block;font-size:.82rem;font-weight:700;color:#475569;margin-bottom:.8rem}
+.btn{border-radius:10px;padding:.65rem 1.1rem;font-weight:700;cursor:pointer;border:none;font-size:.9rem;transition:opacity .15s}
+.btn:hover{opacity:.88}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:#059669;color:#fff}
+.outline{background:#fff;border:1px solid #cbd5e1;color:#0f172a}
+.danger{background:#dc2626;color:#fff}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:.85rem 1rem;border-bottom:1px solid #e2e8f0;text-align:left}
+.table th{background:#f8fafc;font-size:.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em}
+.table tbody tr:hover{background:#f8fafc}
+.table tbody tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:.2rem .65rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:capitalize}
+.badge-green{background:#dcfce7;color:#15803d}
+.badge-red{background:#fee2e2;color:#b91c1c}
+.badge-yellow{background:#fef9c3;color:#a16207}
+.badge-blue{background:#dbeafe;color:#1d4ed8}
+.badge-gray{background:#f1f5f9;color:#475569}
+.progress-bar{height:8px;border-radius:999px;background:#e2e8f0;overflow:hidden}
+.progress-fill{height:100%;border-radius:999px;background:#059669;transition:width .4s}
+.spinner{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#059669;border-radius:50%;animation:spin .7s linear infinite;margin:auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stat-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.4rem;box-shadow:0 1px 3px #0f172a12}
