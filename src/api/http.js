@@ -1,7 +1,7 @@
 import axios from "axios";
 import { enqueue, getQueue, removeFromQueue } from "./offlineQueue";
 
-const BASE = import.meta.env.VITE_API_BASE_URL || "/api";
+const BASE = "/api";
 
 const http = axios.create({ baseURL: BASE });
 
