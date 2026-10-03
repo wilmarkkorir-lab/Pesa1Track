@@ -14,6 +14,7 @@ import BillsPage from "./pages/BillsPage";
 import DebtsPage from "./pages/DebtsPage";
 import BusinessesPage from "./pages/BusinessesPage";
 import SettingsPage from "./pages/SettingsPage";
+import AdminPage from "./pages/AdminPage";
 import AiPage from "./pages/AiPage";
 
 function Guard() {
@@ -47,6 +48,7 @@ export default function App() {
           <Route path="businesses" element={<BusinessesPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="ai" element={<AiPage />} />
+          <Route path="admin" element={<AdminPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

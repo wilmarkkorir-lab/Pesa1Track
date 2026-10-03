@@ -15,6 +15,7 @@ const links = [
   ["/app/businesses", "Businesses", "bi-shop"],
   ["/app/ai", "AI Assistant", "bi-robot"],
   ["/app/settings", "Settings", "bi-gear"],
+  ["/app/admin", "Admin Users", "bi-shield-check"],
 ];
 
 const bottomLinks = [
