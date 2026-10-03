@@ -64,7 +64,7 @@ export default function Layout() {
       </aside>
 
       {/* ── Mobile top bar ── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-4 py-3 bg-slate-950 text-white">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-4 py-3 bg-slate-950 text-white" style={{height:'52px'}}>
         <b className="text-lg"><i className="bi bi-wallet2 text-emerald-400 mr-2" />PesaTrack</b>
         <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-sm">
           {user?.full_name?.charAt(0)?.toUpperCase() || "U"}
@@ -72,8 +72,8 @@ export default function Layout() {
       </div>
 
       {/* ── Main content ── */}
-      <main className="md:ml-64 pt-14 md:pt-0 pb-20 md:pb-0">
-        <header className="bg-white border-b px-4 py-3 flex justify-between items-center sticky top-14 md:top-0 z-10">
+      <main className="md:ml-64 pt-[52px] md:pt-0 pb-[64px] md:pb-0 min-h-screen">
+        <header className="bg-white border-b px-4 py-3 flex justify-between items-center sticky top-[52px] md:top-0 z-10" style={{height:'52px'}}>
           <div>
             <b className="text-sm md:text-base">Finance workspace</b>
             <p className="text-xs text-slate-500 hidden sm:block">PesaTrack</p>

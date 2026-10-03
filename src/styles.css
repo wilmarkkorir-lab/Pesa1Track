@@ -1,11 +1,11 @@
 @import "tailwindcss";
 *{box-sizing:border-box}
-html,body{margin:0;height:auto;overflow-y:auto;scrollbar-width:none}
+html,body{margin:0;height:100%;overflow-y:auto;scrollbar-width:none}
 html::-webkit-scrollbar,body::-webkit-scrollbar{display:none}
 *{scrollbar-width:none}
 *::-webkit-scrollbar{display:none}
 body{background:#f8fafc;color:#0f172a;font-family:Inter,system-ui,sans-serif}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 1px 3px #0f172a12}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 1px 3px #0f172a12;will-change:auto}
 .input{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:.7rem;background:white;font-size:.95rem}
 .input:focus{outline:3px solid #10b98122;border-color:#10b981}
 .label{display:block;font-size:.82rem;font-weight:700;color:#475569;margin-bottom:.8rem}
