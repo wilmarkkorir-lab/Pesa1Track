@@ -11,6 +11,7 @@ export default function AdminPage() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    if (!user?.is_superuser) { setLoading(false); return; }
     http.get("/auth/users/")
       .then(r => setUsers(getRows(r)))
       .catch(e => setError(e.response?.status === 403 ? "Access denied. Admin only." : "Failed to load users."))
@@ -24,6 +25,14 @@ export default function AdminPage() {
 
   return (
     <>
+      {!user?.is_superuser ? (
+        <div className="card p-8 text-center text-red-500">
+          <i className="bi bi-shield-x text-5xl block mb-3" />
+          <p className="font-bold text-lg">Access Denied</p>
+          <p className="text-sm text-slate-400 mt-1">You need admin access to view this page.</p>
+        </div>
+      ) : (
+      <>
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold">Users</h1>
@@ -127,6 +136,7 @@ export default function AdminPage() {
           </div>
         </>
       )}
+      </>
     </>
   );
 }

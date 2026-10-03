@@ -39,7 +39,7 @@ export default function Layout() {
           <b className="text-white text-2xl"><i className="bi bi-wallet2 text-emerald-400 mr-2" />PesaTrack</b>
         </div>
         <nav className="flex-1 overflow-y-auto px-3 pb-3 space-y-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {links.map(([to, label, icon]) => (
+          {links.filter(([to]) => to !== "/app/admin" || user?.is_superuser).map(([to, label, icon]) => (
             <NavLink end={to === "/app"} key={to} to={to}
               className={({ isActive }) => `flex items-center rounded-xl px-3 py-2.5 text-sm transition-colors ${isActive ? "bg-emerald-600 text-white" : "hover:bg-slate-800 text-slate-300"}`}>
               <i className={`bi ${icon} mr-3 text-base`} />{label}
@@ -98,7 +98,7 @@ export default function Layout() {
               <button onClick={() => setMoreOpen(false)} className="text-slate-400 text-xl"><i className="bi bi-x-lg" /></button>
             </div>
             <div className="grid grid-cols-3 gap-3 mb-4">
-              {links.map(([to, label, icon]) => (
+              {links.filter(([to]) => to !== "/app/admin" || user?.is_superuser).map(([to, label, icon]) => (
                 <NavLink end={to === "/app"} key={to} to={to}
                   onClick={() => setMoreOpen(false)}
                   className={({ isActive }) => `flex flex-col items-center gap-1.5 p-3 rounded-xl text-center transition-colors ${isActive ? "bg-emerald-600 text-white" : "bg-slate-800 text-slate-300"}`}>
