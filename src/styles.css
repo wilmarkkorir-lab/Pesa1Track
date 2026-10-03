@@ -15,8 +15,10 @@ body{background:#f8fafc;color:#0f172a;font-family:Inter,system-ui,sans-serif}
 .primary{background:#059669;color:#fff}
 .outline{background:#fff;border:1px solid #cbd5e1;color:#0f172a}
 .danger{background:#dc2626;color:#fff}
-.table{width:100%;border-collapse:collapse}
-.table th,.table td{padding:.85rem 1rem;border-bottom:1px solid #e2e8f0;text-align:left}
+.table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(min-width:640px){.table{display:table}}
+.table th,.table td{padding:.75rem .85rem;border-bottom:1px solid #e2e8f0;text-align:left;white-space:nowrap}
+@media(min-width:640px){.table th,.table td{padding:.85rem 1rem;white-space:normal}}
 .table th{background:#f8fafc;font-size:.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em}
 .table tbody tr:hover{background:#f8fafc}
 .table tbody tr:last-child td{border-bottom:none}
