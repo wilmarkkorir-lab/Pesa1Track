@@ -1,4 +1,5 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import OfflineBanner from "./OfflineBanner";
 
@@ -16,18 +17,17 @@ const links = [
   ["/app/settings", "Settings", "bi-gear"],
 ];
 
-// Bottom nav shows only the 5 most important links on mobile
 const bottomLinks = [
   ["/app", "Home", "bi-grid-1x2"],
   ["/app/transactions", "Transactions", "bi-arrow-left-right"],
   ["/app/budgets", "Budgets", "bi-pie-chart"],
   ["/app/ai", "AI", "bi-robot"],
-  ["/app/settings", "Settings", "bi-gear"],
 ];
 
 export default function Layout() {
   const { user, signOut } = useAuth();
   const n = useNavigate();
+  const [moreOpen, setMoreOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -66,10 +66,8 @@ export default function Layout() {
       {/* ── Mobile top bar ── */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-4 py-3 bg-slate-950 text-white">
         <b className="text-lg"><i className="bi bi-wallet2 text-emerald-400 mr-2" />PesaTrack</b>
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-sm">
-            {user?.full_name?.charAt(0)?.toUpperCase() || "U"}
-          </div>
+        <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-sm">
+          {user?.full_name?.charAt(0)?.toUpperCase() || "U"}
         </div>
       </div>
 
@@ -89,8 +87,46 @@ export default function Layout() {
         </div>
       </main>
 
+      {/* ── Mobile "More" drawer ── */}
+      {moreOpen && (
+        <div className="md:hidden fixed inset-0 z-30 flex flex-col justify-end">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setMoreOpen(false)} />
+          <div className="relative bg-slate-950 rounded-t-2xl p-4 z-40">
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-white font-bold">All Pages</p>
+              <button onClick={() => setMoreOpen(false)} className="text-slate-400 text-xl"><i className="bi bi-x-lg" /></button>
+            </div>
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              {links.map(([to, label, icon]) => (
+                <NavLink end={to === "/app"} key={to} to={to}
+                  onClick={() => setMoreOpen(false)}
+                  className={({ isActive }) => `flex flex-col items-center gap-1.5 p-3 rounded-xl text-center transition-colors ${isActive ? "bg-emerald-600 text-white" : "bg-slate-800 text-slate-300"}`}>
+                  <i className={`bi ${icon} text-xl`} />
+                  <span className="text-xs font-medium leading-tight">{label}</span>
+                </NavLink>
+              ))}
+            </div>
+            <div className="border-t border-slate-800 pt-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold">
+                  {user?.full_name?.charAt(0)?.toUpperCase() || "U"}
+                </div>
+                <div>
+                  <p className="text-white text-sm font-bold">{user?.full_name}</p>
+                  <p className="text-slate-400 text-xs">{user?.email}</p>
+                </div>
+              </div>
+              <button onClick={() => { signOut(); n("/login"); }}
+                className="flex items-center gap-2 text-red-400 text-sm px-3 py-2 rounded-xl bg-slate-800">
+                <i className="bi bi-box-arrow-left" /> Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Mobile bottom nav ── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-slate-950 border-t border-slate-800 flex items-center justify-around px-2 py-2 safe-area-bottom">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-slate-950 border-t border-slate-800 flex items-center justify-around px-2 py-2">
         {bottomLinks.map(([to, label, icon]) => (
           <NavLink end={to === "/app"} key={to} to={to}
             className={({ isActive }) => `flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-colors ${isActive ? "text-emerald-400" : "text-slate-400"}`}>
@@ -98,6 +134,12 @@ export default function Layout() {
             <span className="text-[10px] font-medium">{label}</span>
           </NavLink>
         ))}
+        {/* More button */}
+        <button onClick={() => setMoreOpen(true)}
+          className="flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-slate-400">
+          <i className="bi bi-grid-3x3-gap text-xl" />
+          <span className="text-[10px] font-medium">More</span>
+        </button>
       </nav>
 
       <OfflineBanner />
