@@ -14,15 +14,15 @@ function readError(x) {
 function CategorySelect({ categories, value, onChange, filterType }) {
   const filtered = filterType ? categories.filter(c => c.transaction_type === filterType) : categories;
   return (
-    <label className="label">Category
+    <label className="label">Category <span className="text-slate-400 font-normal">(optional)</span>
       <select className="input mt-1" value={value || ""} onChange={e => onChange(e.target.value ? Number(e.target.value) : null)}>
-        <option value="">— Select category —</option>
+        <option value="">— No category —</option>
         {filtered.map(c => (
           <option key={c.id} value={c.id}>{c.name}</option>
         ))}
       </select>
-      {filtered.length === 0 && (
-        <p className="text-xs text-amber-600 mt-1"><i className="bi bi-exclamation-triangle mr-1" />No categories yet. <a href="/app/categories" className="underline font-semibold">Add one first</a></p>
+      {categories.length > 0 && filtered.length === 0 && (
+        <p className="text-xs text-amber-600 mt-1"><i className="bi bi-exclamation-triangle mr-1" />No {filterType} categories. <a href="/app/categories" className="underline font-semibold">Add one</a></p>
       )}
     </label>
   );
@@ -224,7 +224,7 @@ function TransactionsTable({ categories, reloadKey, onReload }) {
               </div>
             </label>
             {/* Category */}
-            <CategorySelect categories={categories} value={record.category} onChange={v => setRecord({ ...record, category: v })} />
+            <CategorySelect categories={categories} value={record.category} onChange={v => setRecord({ ...record, category: v })} filterType={record.transaction_type} />
             {/* Amount */}
             <label className="label">Amount
               <input required type="number" min="0.01" step="0.01" className="input mt-1" placeholder="0.00" value={record.amount || ""} onChange={e => setRecord({ ...record, amount: e.target.value })} />

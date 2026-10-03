@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../api/endpoints";
 import { useAuth } from "../context/AuthContext";
@@ -24,7 +24,7 @@ export default function AuthPages({ register = false }) {
   const n = useNavigate();
 
   // Already logged in — skip login page
-  if (user) { n("/app", { replace: true }); return null; }
+  useEffect(() => { if (user) n("/app", { replace: true }); }, [user]);
 
   const submit = async e => {
     e.preventDefault();

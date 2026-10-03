@@ -28,9 +28,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     Promise.all([
-      api.summary().then(r => setSummary(r.data)).catch(() => {}),
-      api.monthlyBreakdown().then(r => setMonthly(r.data)).catch(() => {}),
-      api.categoryBreakdown().then(r => setCategories(r.data)).catch(() => {}),
+      api.summary().then(r => setSummary(r.data && typeof r.data === "object" ? r.data : {})).catch(() => {}),
+      api.monthlyBreakdown().then(r => { const d = r.data; setMonthly(Array.isArray(d) ? d : Array.isArray(d?.results) ? d.results : []); }).catch(() => {}),
+      api.categoryBreakdown().then(r => { const d = r.data; setCategories(Array.isArray(d) ? d : Array.isArray(d?.results) ? d.results : []); }).catch(() => {}),
       api.transactions.list().then(r => setRecent(getRows(r).slice(0, 5))).catch(() => {}),
     ]).finally(() => setLoading(false));
   }, []);
