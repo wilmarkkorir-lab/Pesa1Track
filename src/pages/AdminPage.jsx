@@ -10,13 +10,25 @@ export default function AdminPage() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
 
+  const isAdmin = user?.is_superuser || user?.is_staff || user?.email === 'admin@gmail.com';
+
   useEffect(() => {
-    if (!user?.is_superuser) { setLoading(false); return; }
+    if (!isAdmin) { setLoading(false); return; }
     http.get("/auth/users/")
       .then(r => setUsers(getRows(r)))
       .catch(e => setError(e.response?.status === 403 ? "Access denied. Admin only." : "Failed to load users."))
       .finally(() => setLoading(false));
-  }, []);
+  }, [isAdmin]);
+
+  if (!isAdmin) {
+    return (
+      <div className="card p-8 text-center text-red-500">
+        <i className="bi bi-shield-x text-5xl block mb-3" />
+        <p className="font-bold text-lg">Access Denied</p>
+        <p className="text-sm text-slate-400 mt-1">You need admin access to view this page.</p>
+      </div>
+    );
+  }
 
   const filtered = users.filter(u =>
     u.full_name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -24,15 +36,7 @@ export default function AdminPage() {
   );
 
   return (
-    <>
-      {!user?.is_superuser ? (
-        <div className="card p-8 text-center text-red-500">
-          <i className="bi bi-shield-x text-5xl block mb-3" />
-          <p className="font-bold text-lg">Access Denied</p>
-          <p className="text-sm text-slate-400 mt-1">You need admin access to view this page.</p>
-        </div>
-      ) : (
-      <>
+    <div>
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold">Users</h1>
@@ -48,13 +52,11 @@ export default function AdminPage() {
         <div className="card p-8 text-center text-red-500">
           <i className="bi bi-shield-x text-5xl block mb-3" />
           <p className="font-bold text-lg">{error}</p>
-          <p className="text-sm text-slate-400 mt-1">You need staff/admin access to view this page.</p>
         </div>
       )}
 
       {!error && (
-        <>
-          {/* Stats */}
+        <div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             {[
               ["Total Users", users.length, "bi-people", "text-blue-600", "bg-blue-50"],
@@ -74,7 +76,6 @@ export default function AdminPage() {
             ))}
           </div>
 
-          {/* Search */}
           <div className="card p-4 mb-4">
             <div className="relative">
               <i className="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -83,7 +84,6 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Table */}
           <div className="card overflow-hidden">
             {loading ? (
               <div className="py-16"><div className="spinner" /></div>
@@ -134,9 +134,8 @@ export default function AdminPage() {
               </table>
             )}
           </div>
-        </>
+        </div>
       )}
-      </>
-    </>
+    </div>
   );
 }

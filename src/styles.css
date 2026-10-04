@@ -33,3 +33,16 @@ body{background:#f8fafc;color:#0f172a;font-family:Inter,system-ui,sans-serif}
 .spinner{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#059669;border-radius:50%;animation:spin .7s linear infinite;margin:auto}
 @keyframes spin{to{transform:rotate(360deg)}}
 .stat-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.4rem;box-shadow:0 1px 3px #0f172a12}
+@keyframes slide-in{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:translateX(0)}}
+.animate-slide-in{animation:slide-in .25s ease-out}
+
+/* Dark mode */
+.dark body{background:#0f172a;color:#e2e8f0}
+.dark .card,.dark .stat-card{background:#1e293b;border-color:#334155;color:#e2e8f0}
+.dark .input{background:#1e293b;border-color:#334155;color:#e2e8f0}
+.dark .label{color:#94a3b8}
+.dark .outline{background:#1e293b;border-color:#334155;color:#e2e8f0}
+.dark .table th{background:#1e293b;color:#94a3b8}
+.dark .table td{border-color:#334155}
+.dark .table tbody tr:hover{background:#1e293b}
+.dark .badge-gray{background:#334155;color:#94a3b8}

@@ -9,20 +9,29 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
-    // Don't even attempt if there's no token — avoids 400/401 on cold load
-    if (!localStorage.getItem("access")) {
-      setUser(null);
-      setLoading(false);
-      return;
-    }
+    const access = localStorage.getItem("access");
+    const refresh = localStorage.getItem("refresh");
+    if (!access && !refresh) { setUser(null); setLoading(false); return; }
     try {
       const { data } = await auth.me();
       setUser(data);
-    } catch {
-      // Token invalid or expired and refresh failed — clear and treat as logged out
-      setUser(null);
-      localStorage.removeItem("access");
-      localStorage.removeItem("refresh");
+    } catch (e) {
+      if (e.response?.status === 401 && refresh) {
+        try {
+          const { data } = await auth.refresh({ refresh });
+          localStorage.setItem("access", data.access);
+          const { data: me } = await auth.me();
+          setUser(me);
+        } catch {
+          setUser(null);
+          localStorage.removeItem("access");
+          localStorage.removeItem("refresh");
+        }
+      } else {
+        setUser(null);
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+      }
     } finally {
       setLoading(false);
     }

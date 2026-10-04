@@ -6,7 +6,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "./styles.css";
 import App from "./App";
 
-// Register service worker — auto-updates silently
+// Apply saved theme before render to avoid flash
+if (localStorage.getItem("theme") === "dark") document.documentElement.classList.add("dark");
+
 registerSW({ immediate: true });
 
 ReactDOM.createRoot(document.getElementById("root")).render(

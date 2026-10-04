@@ -2,6 +2,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import OfflineBanner from "./OfflineBanner";
+import { Avatar } from "../pages/SettingsPage";
 
 const links = [
   ["/app", "Dashboard", "bi-grid-1x2"],
@@ -29,6 +30,7 @@ export default function Layout() {
   const { user, signOut } = useAuth();
   const n = useNavigate();
   const [moreOpen, setMoreOpen] = useState(false);
+  const isAdmin = user?.is_superuser || user?.is_staff || user?.email === 'admin@gmail.com';
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -39,7 +41,7 @@ export default function Layout() {
           <b className="text-white text-2xl"><i className="bi bi-wallet2 text-emerald-400 mr-2" />PesaTrack</b>
         </div>
         <nav className="flex-1 overflow-y-auto px-3 pb-3 space-y-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {links.filter(([to]) => to !== "/app/admin" || user?.is_superuser).map(([to, label, icon]) => (
+          {links.filter(([to]) => to !== "/app/admin" || isAdmin).map(([to, label, icon]) => (
             <NavLink end={to === "/app"} key={to} to={to}
               className={({ isActive }) => `flex items-center rounded-xl px-3 py-2.5 text-sm transition-colors ${isActive ? "bg-emerald-600 text-white" : "hover:bg-slate-800 text-slate-300"}`}>
               <i className={`bi ${icon} mr-3 text-base`} />{label}
@@ -48,8 +50,8 @@ export default function Layout() {
         </nav>
         <div className="shrink-0 border-t border-slate-800 px-5 py-4">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-sm shrink-0">
-              {user?.full_name?.charAt(0)?.toUpperCase() || "U"}
+            <div className="w-8 h-8 rounded-full overflow-hidden shrink-0">
+              <Avatar user={user} size="w-8 h-8" text="text-sm" />
             </div>
             <div className="min-w-0">
               <p className="font-bold text-white text-sm truncate">{user?.full_name}</p>
@@ -67,8 +69,8 @@ export default function Layout() {
       {/* ── Mobile top bar ── */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-4 py-3 bg-slate-950 text-white" style={{height:'52px'}}>
         <b className="text-lg"><i className="bi bi-wallet2 text-emerald-400 mr-2" />PesaTrack</b>
-        <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-sm">
-          {user?.full_name?.charAt(0)?.toUpperCase() || "U"}
+        <div className="w-8 h-8 rounded-full overflow-hidden">
+          <Avatar user={user} size="w-8 h-8" text="text-sm" />
         </div>
       </div>
 
@@ -98,7 +100,7 @@ export default function Layout() {
               <button onClick={() => setMoreOpen(false)} className="text-slate-400 text-xl"><i className="bi bi-x-lg" /></button>
             </div>
             <div className="grid grid-cols-3 gap-3 mb-4">
-              {links.filter(([to]) => to !== "/app/admin" || user?.is_superuser).map(([to, label, icon]) => (
+              {links.filter(([to]) => to !== "/app/admin" || isAdmin).map(([to, label, icon]) => (
                 <NavLink end={to === "/app"} key={to} to={to}
                   onClick={() => setMoreOpen(false)}
                   className={({ isActive }) => `flex flex-col items-center gap-1.5 p-3 rounded-xl text-center transition-colors ${isActive ? "bg-emerald-600 text-white" : "bg-slate-800 text-slate-300"}`}>
@@ -109,8 +111,8 @@ export default function Layout() {
             </div>
             <div className="border-t border-slate-800 pt-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold">
-                  {user?.full_name?.charAt(0)?.toUpperCase() || "U"}
+                <div className="w-9 h-9 rounded-full overflow-hidden">
+                  <Avatar user={user} size="w-9 h-9" text="text-base" />
                 </div>
                 <div>
                   <p className="text-white text-sm font-bold">{user?.full_name}</p>

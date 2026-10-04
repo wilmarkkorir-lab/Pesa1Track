@@ -3,6 +3,7 @@ import ScreenshotImport from "../components/ScreenshotImport";
 import { api, getRows } from "../api/endpoints";
 import { exportCsv } from "../api/exportCsv";
 import { parseMpesa } from "../api/parseMpesa";
+import { emit } from "../lib/events";
 
 function readError(x) {
   const d = x?.response?.data;
@@ -137,16 +138,23 @@ function TransactionsTable({ categories, reloadKey, onReload }) {
     const payload = { ...record };
     if (!payload.category) delete payload.category;
     try {
-      selected ? await api.transactions.update(selected.id, payload) : await api.transactions.create(payload);
-      cancel(); setMessage({ ok: true, msg: "Saved successfully." }); load(); onReload();
+      if (selected) {
+        const { data } = await api.transactions.update(selected.id, payload);
+        setAll(prev => prev.map(t => t.id === selected.id ? data : t));
+      } else {
+        const { data } = await api.transactions.create(payload);
+        setAll(prev => [data, ...prev]);
+      }
+      cancel(); setMessage({ ok: true, msg: "Saved successfully." }); onReload(); emit("data:changed");
     } catch (x) { setMessage({ ok: false, msg: readError(x) }); }
     finally { setSaving(false); }
   };
 
   const remove = async t => {
     if (!confirm("Delete this transaction?")) return;
-    try { await api.transactions.remove(t.id); load(); }
-    catch (x) { setMessage({ ok: false, msg: readError(x) }); }
+    setAll(prev => prev.filter(x => x.id !== t.id));
+    try { await api.transactions.remove(t.id); onReload(); emit("data:changed"); }
+    catch (x) { load(); setMessage({ ok: false, msg: readError(x) }); }
   };
 
   const clearFilters = () => { setSearch(""); setFilterType(""); setFilterCat(""); setFilterFrom(""); setFilterTo(""); };

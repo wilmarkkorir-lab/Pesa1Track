@@ -6,6 +6,7 @@ import {
 } from "recharts";
 import { api, getRows } from "../api/endpoints";
 import { useAuth } from "../context/AuthContext";
+import { on } from "../lib/events";
 
 const COLORS = ["#059669","#3b82f6","#f59e0b","#ef4444","#8b5cf6","#ec4899","#14b8a6","#f97316"];
 
@@ -27,13 +28,18 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    loadData();
+    return on("data:changed", loadData);
+  }, []);
+
+  function loadData() {
     Promise.all([
       api.summary().then(r => setSummary(r.data && typeof r.data === "object" ? r.data : {})).catch(() => {}),
       api.monthlyBreakdown().then(r => { const d = r.data; setMonthly(Array.isArray(d) ? d : Array.isArray(d?.results) ? d.results : []); }).catch(() => {}),
       api.categoryBreakdown().then(r => { const d = r.data; setCategories(Array.isArray(d) ? d : Array.isArray(d?.results) ? d.results : []); }).catch(() => {}),
       api.transactions.list().then(r => setRecent(getRows(r).slice(0, 5))).catch(() => {}),
     ]).finally(() => setLoading(false));
-  }, []);
+  }
 
   if (loading) return <div className="py-20"><div className="spinner" /></div>;
 
