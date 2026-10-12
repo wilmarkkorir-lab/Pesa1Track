@@ -1,6 +1,10 @@
 # PesaTrack Frontend
 
-React + Vite + Tailwind frontend for PesaTrack personal finance tracker.
+PesaTrack is a personal finance management web app built for individuals who want full control over their money. It lets you track income and expenses, set budgets, manage savings goals, monitor bills and debts, and run multiple business accounts — all from one dashboard.
+
+The app includes an AI assistant powered by Groq that understands your financial data and answers questions about your spending, budgets, and goals in natural language. You can also talk to it using your microphone.
+
+Built with React + Vite + Tailwind on the frontend and Django REST Framework on the backend, with JWT authentication and a MySQL database hosted on alwaysdata.
 
 - Live: https://pesa1-track.vercel.app
 - Backend: https://pesatrack.alwaysdata.net
